@@ -1,0 +1,32 @@
+main: me.goodgamer123.ServerSpawn.MainClass
+api-version: 1.15
+name: ServerSpawn
+author: goodgamer123
+description: config the spawn location and join and leave messages.
+version: 2.3
+
+commands:
+  serverspawn:
+    description: config the serverspawn.
+    permission: serverspawn.serverspawn
+  lobby:
+    description: teleport to the spawn.
+  hub:
+    description: teleport to the spawn.
+  spawn:
+    description: teleport to the spawn.
+  fake:
+    description: fake your join or leave.
+    permission: serverspawn.fake
+  leavemessage:
+    description: config the leavemessage.
+    permission: serverspawn.leavemessage
+  joinmessage:
+    description: config the joinmessage.
+    permission: serverspawn.joinmessage
+  colorcodes:
+    description: get a list of the minecraft colorcodes.
+    permission: serverspawn.colorcodes
+  custommessages:
+    descriptoin: enable and disable the custom messages.
+    permission: serverspawn.custommessages
