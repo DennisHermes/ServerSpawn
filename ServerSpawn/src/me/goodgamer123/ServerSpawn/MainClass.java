@@ -20,7 +20,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -32,35 +31,6 @@ public final class MainClass extends JavaPlugin implements Listener {
 	FileConfiguration newConfigz;
 	
 	public void onEnable() {
-		File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-		
-		if (!customYml.exists()) {
-			newConfig = new File(MainClass.getPlugin(MainClass.class).getDataFolder(), "/ServerSpawn.yml");
-			newConfigz = YamlConfiguration.loadConfiguration(newConfig);
-			saveNewConfig();
-			new BukkitRunnable() {
-	            @Override
-	            public void run() {
-	            	FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-	            	config.set("ServerSpawn.X", "");
-	            	config.set("ServerSpawn.Y", "");
-	        		config.set("ServerSpawn.X", "");
-	        		config.set("ServerSpawn.Pitch", "");
-	        		config.set("ServerSpawn.Yaw", "");
-	        		config.set("ServerSpawn.World", "");
-	        		config.set("Teleport on join", true);
-	        		config.set("Custom messages", "Enabled");
-	        		config.set("Custom Joinmessage", "&0[&2+&0] &8%player%");
-	        		config.set("Custom Leavemessage", "&0[&4-&0] &8%player%");
-	            	try {
-						config.save(customYml);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-	            }
-	        }.runTaskLater(MainClass.getPlugin(MainClass.class), 1L);
-		}
-		
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		
 		getCommand("custommessages").setExecutor(this);
@@ -75,27 +45,14 @@ public final class MainClass extends JavaPlugin implements Listener {
 		this.getCommand("fake").setTabCompleter(new TabCompleterClass());
 		this.getCommand("joinmessage").setTabCompleter(new TabCompleterClass());
 		this.getCommand("leavemessage").setTabCompleter(new TabCompleterClass());
+		
+		API.loadFiles(this);
 	}
 
   
   @EventHandler
   public void onPlayerJoin(PlayerJoinEvent e) {
 	  Player p = e.getPlayer();
-	  File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-	  FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-	  
-	  if (config.getString("Custom messages") == null) {
-		  Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE + "[ServerSpawn]" + ChatColor.RED + "§lWARNING: " + "the following value in the config is null: 'Custom Message'");
-	  } else if (config.getString("Custom Joinmessage") == null) {
-		  Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE + "[ServerSpawn]" + ChatColor.RED + "§lWARNING: " + "the following value in the config is null: 'Custom Joinmessage'");
-	  } else if (config.getString("Custom messages").equalsIgnoreCase("enabled")) {
-		  String message = config.getString("Custom Joinmessage");
-		  message = ChatColor.translateAlternateColorCodes('&', message);
-		  message = message.replace("%player%", this.getName(p.getUniqueId()));
-		  message = message.replace("%Player%",  this.getName(p.getUniqueId()));
-		  
-		  e.setJoinMessage(message);
-	  }
 	  
 	  if (config.getBoolean("Teleport on join")) {
 		  if (config.getString("ServerSpawn.World").equalsIgnoreCase("")) {
