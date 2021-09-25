@@ -51,41 +51,6 @@ public final class MainClass extends JavaPlugin implements Listener {
 
   
   @EventHandler
-  public void onPlayerJoin(PlayerJoinEvent e) {
-	  Player p = e.getPlayer();
-	  
-	  if (config.getBoolean("Teleport on join")) {
-		  if (config.getString("ServerSpawn.World").equalsIgnoreCase("")) {
-			  Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE + "[ServerSpawn]" + ChatColor.RED + "§lERROR: " + "the following value in the config is null: 'ServerSpawn'");
-		  } else {
-			  double X = config.getDouble("ServerSpawn.X");
-			  double Y = config.getDouble("ServerSpawn.Y");
-			  double Z = config.getDouble("ServerSpawn.Z");
-			  float Pitch = (float) config.getDouble("ServerSpawn.Pitch");
-			  float Yaw = (float) config.getDouble("ServerSpawn.Yaw");
-			  String WorldName = config.getString("ServerSpawn.World");
-			  World World = Bukkit.getWorld(WorldName);
-			  Location loc = new Location(World, X, Y, Z, Yaw, Pitch);
-			  p.teleport(loc);
-		  }
-	  }
-	  
-	  if (!p.hasPlayedBefore()) {
-		  double X = config.getDouble("ServerSpawn.X");
-		  double Y = config.getDouble("ServerSpawn.Y");
-		  double Z = config.getDouble("ServerSpawn.Z");
-		  float Pitch = (float) config.getDouble("ServerSpawn.Pitch");
-		  float Yaw = (float) config.getDouble("ServerSpawn.Yaw");
-		  String WorldName = config.getString("ServerSpawn.World");
-		  World World = Bukkit.getWorld(WorldName);
-		  Location loc = new Location(World, X, Y, Z, Yaw, Pitch);
-		  p.teleport(loc);
-	  }
-	  
-  }
-
-  
-  @EventHandler
   public void onPlayerQuit(PlayerQuitEvent e) {
 	  Player p = e.getPlayer();
 	  File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
