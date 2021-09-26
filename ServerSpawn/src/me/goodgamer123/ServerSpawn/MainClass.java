@@ -15,10 +15,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.craftbukkit.libs.org.apache.commons.io.IOUtils;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -48,30 +45,6 @@ public final class MainClass extends JavaPlugin implements Listener {
 		
 		API.loadFiles(this);
 	}
-
-  
-  @EventHandler
-  public void onPlayerQuit(PlayerQuitEvent e) {
-	  Player p = e.getPlayer();
-	  File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-	  FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-	  
-	  if (config.getString("Custom messages") == null) {
-		  Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "§lWARNING:" + "the following value in the config is null: 'Custom Message'");
-	  } else if (config.getString("Custom Joinmessage") == null) {
-		  Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "§lWARNING:" + "the following value in the config is null: 'Custom Joinmessage'");
-	  } else if (config.getString("Custom messages").equalsIgnoreCase("enabled")) {
-		  String message = config.getString("Custom Leavemessage");
-		  message = ChatColor.translateAlternateColorCodes('&', message);
-		  message = message.replace("%player%", this.getName(p.getUniqueId()));
-		  message = message.replace("%Player%", this.getName(p.getUniqueId()));
-		  
-		  e.setQuitMessage(message);
-	  }
-  }
-
-
-
   
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     if (!(sender instanceof Player)) {

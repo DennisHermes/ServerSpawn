@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class API {
@@ -38,7 +39,7 @@ public class API {
 		
 		if (!MessagesYml.exists()) {
 			Messages.set("Custom messages.Join message", "&0[&2+&0] &8%player%");
-			Messages.set("Custom messages.Leave message", "&0[&4-&0] &8%player%");
+			Messages.set("Custom messages.Qiut message", "&0[&4-&0] &8%player%");
 			saveFiles();
 		}
 	}
@@ -47,20 +48,36 @@ public class API {
 	//Gatherers
 	//
 	
+	//Spawnpoint
+	
 	public static Location getServerSpawn() {
 		if (ServerSpawn.getLocation("Server spawn") == null) return null; else {
 			return ServerSpawn.getLocation("Server spawn");
 		}
 	}
 	
-	public static String getJoinMessage() {
+	//Join message
+	
+	public static String getJoinMessage(Player p) {
 		String joinMessage = ChatColor.translateAlternateColorCodes('&', ServerSpawn.getString("Custom messages.Join message"));
-		joinMessage = placeholderReplace(joinMessage);
+		joinMessage = placeholderReplace(joinMessage, p);
 		return joinMessage;
 	}
 	
 	public static String getRawJoinMessage() {
 		return ServerSpawn.getString("Custom messages.Join message");
+	}
+	
+	//Quit message
+	
+	public static String getQuitMessage(Player p) {
+		String quitMessage = ChatColor.translateAlternateColorCodes('&', ServerSpawn.getString("Custom messages.Quit message"));
+		quitMessage = placeholderReplace(quitMessage, p);
+		return quitMessage;
+	}
+	
+	public static String getRawQuitMessage() {
+		return ServerSpawn.getString("Custom messages.Quit message");
 	}
 	
 	//
@@ -79,8 +96,8 @@ public class API {
 	//Data transmitting
 	//
 	
-	public static String placeholderReplace(String string) {
-		//TODO
+	public static String placeholderReplace(String string, Player p) {
+		string = string.replace("%player%", p.getName());
 		return string;
 	}
 	static void saveFiles() {

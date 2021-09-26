@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class OnJoin implements Listener {
 	
@@ -18,7 +19,14 @@ public class OnJoin implements Listener {
 		}
 		
 		if (API.customMessages()) {
-			e.setJoinMessage(API.getJoinMessage());
+			e.setJoinMessage(API.getJoinMessage(e.getPlayer()));
+		}
+	}
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onPlayerQuit(PlayerQuitEvent e) {
+		if (API.customMessages()) {
+			e.setQuitMessage(API.getQuitMessage(e.getPlayer()));
 		}
 	}
 }
