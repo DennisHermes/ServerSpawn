@@ -50,7 +50,7 @@ public final class MainClass extends JavaPlugin implements Listener {
   
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     if (!(sender instanceof Player)) {
-      sender.sendMessage(ChatColor.DARK_RED + "je moet een speler zijn om dit te kunnen doen!");
+      sender.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.NeedToBeAPlayer));
       return false;
     } 
     
@@ -89,49 +89,23 @@ public final class MainClass extends JavaPlugin implements Listener {
     
 //===========================================================================================================================//
     
-    if (cmd.getName().equalsIgnoreCase("fake")) {
-    	if (args.length <= 0) {
-    		p.sendMessage(ChatColor.RED + "§lIncorrect argument!");
-			p.sendMessage(ChatColor.RED + "Use /fake [join | leave]");
-    	} else {
-    		if (args[0].equalsIgnoreCase("join")) {
-    			for (Player OnlinePlayers : Bukkit.getServer().getOnlinePlayers()) {
-    				
-    				File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-        			FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-        			
-    				if (config.getString("Custom messages").equalsIgnoreCase("disabled")) {
-    					OnlinePlayers.sendMessage(ChatColor.YELLOW + this.getName(p.getUniqueId()) + " joined the game");
-    				} else {
-    					String message = config.getString("Custom Joinmessage");
-    					message = ChatColor.translateAlternateColorCodes('&', message);
-    					message = message.replace("%player%", this.getName(p.getUniqueId()));
-    					message = message.replace("%Player%", this.getName(p.getUniqueId()));
-    					OnlinePlayers.sendMessage(message);
-    				}
-    			}
+	if (cmd.getName().equalsIgnoreCase("fake")) {
+		if (args.length <= 0) {
+			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.FakeIncorrectArg));
+		} else {
+			if (args[0].equalsIgnoreCase("join")) {
+				if (API.customMessages()) Bukkit.broadcastMessage(API.getJoinMessage(p)); else Bukkit.broadcastMessage(ChatColor.YELLOW + p.getName() + " joined the game");
     		} else if (args[0].equalsIgnoreCase("leave")) {
-    			
-    			File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-    			FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-    			
-    			for (Player OnlinePlayers : Bukkit.getServer().getOnlinePlayers()) {
-    				if (config.getString("Custom messages").equalsIgnoreCase("disabled")) {
-    					OnlinePlayers.sendMessage(ChatColor.YELLOW + this.getName(p.getUniqueId()) + " left the game");
-    				} else {
-    					String message = config.getString("Custom Leavemessage");
-    					message = ChatColor.translateAlternateColorCodes('&', message);
-    					message = message.replace("%player%", this.getName(p.getUniqueId()));
-    					message = message.replace("%Player%", this.getName(p.getUniqueId()));
-    					OnlinePlayers.sendMessage(message);
-    				}
-    			}
+    			if (API.customMessages()) Bukkit.broadcastMessage(API.getQuitMessage(p)); else Bukkit.broadcastMessage(ChatColor.YELLOW + p.getName() + " left the game");
     		} else {
-    			p.sendMessage(ChatColor.RED + "§lIncorrect argument!");
-    			p.sendMessage(ChatColor.RED + "Use /fake [join | leave]");
+    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.FakeIncorrectArg));
     		}
     	}
     }
+    
+//===========================================================================================================================//
     
     if (cmd.getName().equalsIgnoreCase("custommessages")) {
     	
@@ -172,6 +146,8 @@ public final class MainClass extends JavaPlugin implements Listener {
     		}
     	}
     }
+    
+//===========================================================================================================================//
     
     if (cmd.getName().equalsIgnoreCase("joinmessage")) {
     	
@@ -214,6 +190,8 @@ public final class MainClass extends JavaPlugin implements Listener {
     	}
     }
     
+//===========================================================================================================================//
+    
     if (cmd.getName().equalsIgnoreCase("leavemessage")) {
     	
     	File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
@@ -252,6 +230,8 @@ public final class MainClass extends JavaPlugin implements Listener {
     		}
     	}
     }
+    
+//===========================================================================================================================//
     
     if (cmd.getName().equalsIgnoreCase("hub")) {
     	
@@ -313,6 +293,8 @@ public final class MainClass extends JavaPlugin implements Listener {
 		}
     } 
 
+//===========================================================================================================================//
+    
     if (cmd.getName().equalsIgnoreCase("colorcodes")) {
       p.sendMessage(ChatColor.DARK_RED + "Dark red: &4");
       p.sendMessage(ChatColor.RED + "Red: &c");

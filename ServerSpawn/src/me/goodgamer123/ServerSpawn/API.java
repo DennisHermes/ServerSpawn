@@ -98,8 +98,10 @@ public class API {
 		ServerSpawn,
 		ChangedTeleportOnJoin,
 		NotChangedTeleportOnJoin,
+		NeedToBeAPlayer,
 		IncorrectArg,
 		ServerSpawnIncorrectArg,
+		FakeIncorrectArg,
 	}
 	
 	public static String getMessage(ServerSpawnMessages messageType) {
@@ -122,6 +124,37 @@ public class API {
 				ChatColor.DARK_GREEN + " pitch: " + Math.round(getServerSpawn().getPitch() * 100.0) / 100.0 + ChatColor.GREEN + " and" +
 				ChatColor.DARK_GREEN + " yaw: " + Math.round(getServerSpawn().getYaw() * 100.0) / 100.0 + ChatColor.GREEN + ".";
 			
+		} else if (messageType.equals(ServerSpawnMessages.ChangedTeleportOnJoin)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String teleportOnJoin;
+				if (teleportOnJoin()) teleportOnJoin = "ingeschakeld"; else teleportOnJoin = "uitgeschakeld";
+				return ChatColor.GREEN + "Teleporteren bij toetreding is nu " + ChatColor.DARK_GREEN + teleportOnJoin + ChatColor.GREEN + "!";
+			} else {
+				String teleportOnJoin;
+				if (teleportOnJoin()) teleportOnJoin = "enabled"; else teleportOnJoin = "disabled";
+				return ChatColor.GREEN + "Teleport on join is now " + ChatColor.DARK_GREEN + teleportOnJoin + ChatColor.GREEN + "!";
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.NotChangedTeleportOnJoin)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String teleportOnJoin;
+				if (teleportOnJoin()) teleportOnJoin = "ingeschakeld"; else teleportOnJoin = "uitgeschakeld";
+				return ChatColor.RED + "Teleporteren bij toetreding is al " + ChatColor.DARK_RED + teleportOnJoin + ChatColor.RED + "!";
+			} else {
+				String teleportOnJoin;
+				if (teleportOnJoin()) teleportOnJoin = "enabled"; else teleportOnJoin = "disabled";
+				return ChatColor.RED + "Teleport on join is allready " + ChatColor.DARK_RED + teleportOnJoin + ChatColor.RED + "!";
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.NeedToBeAPlayer)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+				ChatColor.RED + "Je moet een speler zijn om dit te kunnen doen!";
+			else return
+				ChatColor.RED + "You need to be a player to do this!";
+			
 		} else if (messageType.equals(ServerSpawnMessages.IncorrectArg)) {
 			
 			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
@@ -129,12 +162,19 @@ public class API {
 			else return
 				ChatColor.RED + "§lIncorrect argument!";
 			
-		} else if (messageType.equals(ServerSpawnMessages.IncorrectArg)) {
+		} else if (messageType.equals(ServerSpawnMessages.ServerSpawnIncorrectArg)) {
 			
 			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
 				ChatColor.RED + "Gebruik /serverspawn [set | get | enable | disable].";
 			else return
 				ChatColor.RED + "Use /serverspawn [set | get | enable | disable].";
+			
+		} else if (messageType.equals(ServerSpawnMessages.FakeIncorrectArg)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+				ChatColor.RED + "Gebruik /fake [join | leave].";
+			else return
+				ChatColor.RED + "Use /fake [join | leave].";
 			
 		} else {
 			return null;
