@@ -22,13 +22,15 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 
+import me.goodgamer123.ServerSpawn.API.ServerSpawnMessages;
+
 public final class MainClass extends JavaPlugin implements Listener {
   
 	File newConfig;
 	FileConfiguration newConfigz;
 	
 	public void onEnable() {
-		Bukkit.getServer().getPluginManager().registerEvents(this, this);
+		Bukkit.getServer().getPluginManager().registerEvents(new OnJoin(), this);
 		
 		getCommand("custommessages").setExecutor(this);
 		getCommand("serverspawn").setExecutor(this);
@@ -56,105 +58,31 @@ public final class MainClass extends JavaPlugin implements Listener {
     
     if (cmd.getName().equalsIgnoreCase("serverspawn")) {
     	if (args.length <= 0) {
-    		p.sendMessage(ChatColor.RED + "§lIncorrect argument!");
-    		p.sendMessage(ChatColor.RED + "Use /serverspawn [set | get | enable | disable]");
+    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnIncorrectArg));
     	} else {
     		if (args[0].equalsIgnoreCase("set")) {
-    			
-    			double X = Math.round(p.getLocation().getX() * 100);
-    			double Y = Math.round(p.getLocation().getY() * 100);
-    			double Z = Math.round(p.getLocation().getZ() * 100);
-    			float Pitch = Math.round(p.getLocation().getPitch() * 100);
-    			float Yaw = Math.round(p.getLocation().getYaw() * 100);
-    			String World = p.getWorld().getName();
-    			
-    			X = X / 100;
-    			Y = Y / 100;
-    			Z = Z / 100;
-    			Pitch = Pitch / 100;
-    			Yaw = Yaw / 100;
-    			
-    			p.sendMessage(ChatColor.DARK_AQUA + "§lThe serverspawn is set to:");
-    			p.sendMessage(ChatColor.DARK_AQUA +"§lX cordinate: " + ChatColor.BLUE + X);
-    			p.sendMessage(ChatColor.DARK_AQUA + "§lY cordinate: " + ChatColor.BLUE + Y);
-    			p.sendMessage(ChatColor.DARK_AQUA + "§lZ cordinate: " + ChatColor.BLUE + Z);
-    			p.sendMessage(ChatColor.DARK_AQUA + "§lPitch cordinate: " + ChatColor.BLUE + Pitch);
-    			p.sendMessage(ChatColor.DARK_AQUA + "§lYaw cordinate: " + ChatColor.BLUE + Yaw);
-    			p.sendMessage(ChatColor.DARK_AQUA + "§lWorld: " + ChatColor.BLUE + World);
-    			
-    			File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-    			FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-    			
-    			config.set("ServerSpawn.X", X);
-    			config.set("ServerSpawn.Y", Y);
-    			config.set("ServerSpawn.Z", Z);
-    			config.set("ServerSpawn.Pitch", Pitch);
-    			config.set("ServerSpawn.Yaw", Yaw);
-    			config.set("ServerSpawn.World", World);
-    			try {
-					config.save(customYml);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-    			
+    			API.setServerSpawn(p.getLocation());
+    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawn));
     		} else if (args[0].equalsIgnoreCase("get")) {
-    			
-    			File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-    			FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-    			
-    			double X = config.getDouble("ServerSpawn.X");
-    			double Y = config.getDouble("ServerSpawn.Y");
-    			double Z = config.getDouble("ServerSpawn.Z");
-    			float Pitch = (float) config.getDouble("ServerSpawn.Pitch");
-    			float Yaw = (float) config.getDouble("ServerSpawn.Yaw");
-    			String WorldName = config.getString("ServerSpawn.World");
-    			
-    			p.sendMessage(ChatColor.DARK_AQUA + "§lThe serverspawn is set to:");
-    			p.sendMessage(ChatColor.DARK_AQUA +"§lX cordinate: " + ChatColor.BLUE + X);
-    			p.sendMessage(ChatColor.DARK_AQUA + "§lY cordinate: " + ChatColor.BLUE + Y);
-    			p.sendMessage(ChatColor.DARK_AQUA + "§lZ cordinate: " + ChatColor.BLUE + Z);
-    			p.sendMessage(ChatColor.DARK_AQUA + "§lPitch cordinate: " + ChatColor.BLUE + Pitch);
-    			p.sendMessage(ChatColor.DARK_AQUA + "§lYaw cordinate: " + ChatColor.BLUE + Yaw);
-    			p.sendMessage(ChatColor.DARK_AQUA + "§lWorld: " + ChatColor.BLUE + WorldName);
-    			
+    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawn));
     		} else if (args[0].equalsIgnoreCase("enable")) {
-    			
-    			File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-    			FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-    			
-    			boolean enabled = config.getBoolean("Teleport on join");
-    			if (enabled == true) {
-    				p.sendMessage(ChatColor.RED + "Teleport on join is already enabled!");
+    			if (API.teleportOnJoin()) {
+    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.NotChangedTeleportOnJoin));
     			} else {
-    				p.sendMessage(ChatColor.GREEN + "Teleport on join is now enabled!");
-    				config.set("Teleport on join", true);
-    				try {
-						config.save(customYml);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+    				API.setTeleportOnJoin(true);
+    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ChangedTeleportOnJoin));
     			}
-    			
     		} else if (args[0].equalsIgnoreCase("disable")) {
-    			
-    			File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-    			FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-    			
-    			boolean enabled = config.getBoolean("Teleport on join");
-    			if (enabled == false) {
-    				p.sendMessage(ChatColor.RED + "Teleport on join is already disabled!");
+    			if (!API.teleportOnJoin()) {
+    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.NotChangedTeleportOnJoin));
     			} else {
-    				p.sendMessage(ChatColor.GREEN + "Teleport on join is now disabled!");
-    				config.set("Teleport on join", false);
-    				try {
-						config.save(customYml);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+    				API.setTeleportOnJoin(false);
+    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ChangedTeleportOnJoin));
     			}
     		} else {
-    			p.sendMessage(ChatColor.RED + "§lIncorrect argument!");
-    			p.sendMessage(ChatColor.RED + "Use /serverspawn [set | get | enable | disable]");
+    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnIncorrectArg));
     		}
     	}
     }

@@ -22,8 +22,6 @@ public class API {
 		MainClass = plugin;
 		
 		final File ServerSpawnYml = new File(MainClass.getDataFolder() + "/ServerSpawn.yml");
-		final File MessagesYml = new File(MainClass.getDataFolder() + "/Messages.yml");
-		
 		ServerSpawnFile = new File(MainClass.getDataFolder(), "/ServerSpawn.yml");
 		ServerSpawn = YamlConfiguration.loadConfiguration(ServerSpawnFile);
 		
@@ -34,12 +32,16 @@ public class API {
 			saveFiles();
 		}
 		
+
+		final File MessagesYml = new File(MainClass.getDataFolder() + "/Messages.yml");
 		MessagesFile = new File(MainClass.getDataFolder(), "/Messages.yml");
 		Messages = YamlConfiguration.loadConfiguration(MessagesFile);
 		
 		if (!MessagesYml.exists()) {
-			Messages.set("Custom messages.Join message", "&0[&2+&0] &8%player%");
-			Messages.set("Custom messages.Qiut message", "&0[&4-&0] &8%player%");
+			Messages.set("Custom messages.Join message", "&0[&2+&0] &8%playername%");
+			Messages.set("Custom messages.Quit message", "&0[&4-&0] &8%playername%");
+			Messages.set("Prefix", "&0&l[&2Server&aSpawn&0] ");
+			Messages.set("Language", ServerSpawnLanguage.ENGLISH);
 			saveFiles();
 		}
 	}
@@ -80,6 +82,65 @@ public class API {
 		return ServerSpawn.getString("Custom messages.Quit message");
 	}
 	
+	//Additional message info
+	
+	public static ServerSpawnLanguage getLanguage() {
+		return (ServerSpawnLanguage) Messages.get("Language");
+	}
+	
+	public static String getPrefix() {
+		return ChatColor.translateAlternateColorCodes('&', ServerSpawn.getString("Prefix"));
+	}
+	
+	//Messages
+	
+	public static enum ServerSpawnMessages {
+		ServerSpawn,
+		ChangedTeleportOnJoin,
+		NotChangedTeleportOnJoin,
+		IncorrectArg,
+		ServerSpawnIncorrectArg,
+	}
+	
+	public static String getMessage(ServerSpawnMessages messageType) {
+		if (messageType.equals(ServerSpawnMessages.ServerSpawn)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return
+				ChatColor.GREEN + "De server spawn is gezet naar" + 
+				ChatColor.DARK_GREEN + " x: " + Math.round(getServerSpawn().getX() * 100.0) / 100.0 + ChatColor.GREEN + "," + 
+				ChatColor.DARK_GREEN + " y: " + Math.round(getServerSpawn().getY() * 100.0) / 100.0 + ChatColor.GREEN + "," + 
+				ChatColor.DARK_GREEN + " z: " + Math.round(getServerSpawn().getZ() * 100.0) / 100.0 + ChatColor.GREEN + "in wereld " +
+				ChatColor.DARK_GREEN + getServerSpawn().getWorld().getName() + ChatColor.GREEN + " met" +
+				ChatColor.DARK_GREEN + " pitch: " + Math.round(getServerSpawn().getPitch() * 100.0) / 100.0 + ChatColor.GREEN + " en" +
+				ChatColor.DARK_GREEN + " yaw: " + Math.round(getServerSpawn().getYaw() * 100.0) / 100.0 + ChatColor.GREEN + ".";
+			else return 
+				ChatColor.GREEN + "The server spawn is set to" + 
+				ChatColor.DARK_GREEN + " x: " + Math.round(getServerSpawn().getX() * 100.0) / 100.0 + ChatColor.GREEN + "," + 
+				ChatColor.DARK_GREEN + " y: " + Math.round(getServerSpawn().getY() * 100.0) / 100.0 + ChatColor.GREEN + "," + 
+				ChatColor.DARK_GREEN + " z: " + Math.round(getServerSpawn().getZ() * 100.0) / 100.0 + ChatColor.GREEN + "in world " +
+				ChatColor.DARK_GREEN + getServerSpawn().getWorld().getName() + ChatColor.GREEN + " with" +
+				ChatColor.DARK_GREEN + " pitch: " + Math.round(getServerSpawn().getPitch() * 100.0) / 100.0 + ChatColor.GREEN + " and" +
+				ChatColor.DARK_GREEN + " yaw: " + Math.round(getServerSpawn().getYaw() * 100.0) / 100.0 + ChatColor.GREEN + ".";
+			
+		} else if (messageType.equals(ServerSpawnMessages.IncorrectArg)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+				ChatColor.RED + "§lOnjuist argument!";
+			else return
+				ChatColor.RED + "§lIncorrect argument!";
+			
+		} else if (messageType.equals(ServerSpawnMessages.IncorrectArg)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+				ChatColor.RED + "Gebruik /serverspawn [set | get | enable | disable].";
+			else return
+				ChatColor.RED + "Use /serverspawn [set | get | enable | disable].";
+			
+		} else {
+			return null;
+		}
+	}
+	
 	//
 	//Booleans
 	//
@@ -93,16 +154,41 @@ public class API {
 	}
 	
 	//
+	//Setting data
+	//
+	
+	public static void setServerSpawn(Location location) {
+		ServerSpawn.set("Server spawn", location);
+		saveFiles();
+	}
+	
+	public static void setTeleportOnJoin(boolean bool) {
+		ServerSpawn.set("Teleport on join", bool);
+		saveFiles();
+	}
+	
+	public static void setLanguage(ServerSpawnLanguage language) {
+		Messages.set("Language", language);
+	}
+	
+	//
 	//Data transmitting
 	//
 	
+	public static enum ServerSpawnLanguage {
+		ENGLISH,
+		DUTCH
+	}
+	
 	public static String placeholderReplace(String string, Player p) {
-		string = string.replace("%player%", p.getName());
+		string = string.replace("%playername%", p.getName());
 		return string;
 	}
+	
 	static void saveFiles() {
 		try {
 			ServerSpawn.save(ServerSpawnFile);
+			Messages.save(MessagesFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
