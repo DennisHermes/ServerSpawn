@@ -102,6 +102,9 @@ public class API {
 		IncorrectArg,
 		ServerSpawnIncorrectArg,
 		FakeIncorrectArg,
+		CustomMessagesIncorrectArg, 
+		ChangedCustomMessages,
+		NotChangedCustomMessages
 	}
 	
 	public static String getMessage(ServerSpawnMessages messageType) {
@@ -148,6 +151,30 @@ public class API {
 				return ChatColor.RED + "Teleport on join is allready " + ChatColor.DARK_RED + teleportOnJoin + ChatColor.RED + "!";
 			}
 			
+		} else if (messageType.equals(ServerSpawnMessages.ChangedCustomMessages)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String customMessages;
+				if (customMessages()) customMessages = "ingeschakeld"; else customMessages = "uitgeschakeld";
+				return ChatColor.GREEN + "Teleporteren bij toetreding is nu " + ChatColor.DARK_GREEN + customMessages + ChatColor.GREEN + "!";
+			} else {
+				String customMessages;
+				if (customMessages()) customMessages = "enabled"; else customMessages = "disabled";
+				return ChatColor.GREEN + "Teleport on join is now " + ChatColor.DARK_GREEN + customMessages + ChatColor.GREEN + "!";
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.NotChangedCustomMessages)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String customMessages;
+				if (customMessages()) customMessages = "ingeschakeld"; else customMessages = "uitgeschakeld";
+				return ChatColor.RED + "Teleporteren bij toetreding is al " + ChatColor.DARK_RED + customMessages + ChatColor.RED + "!";
+			} else {
+				String customMessages;
+				if (customMessages()) customMessages = "enabled"; else customMessages = "disabled";
+				return ChatColor.RED + "Teleport on join is allready " + ChatColor.DARK_RED + customMessages + ChatColor.RED + "!";
+			}
+			
 		} else if (messageType.equals(ServerSpawnMessages.NeedToBeAPlayer)) {
 			
 			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
@@ -175,6 +202,13 @@ public class API {
 				ChatColor.RED + "Gebruik /fake [join | leave].";
 			else return
 				ChatColor.RED + "Use /fake [join | leave].";
+			
+		} else if (messageType.equals(ServerSpawnMessages.CustomMessagesIncorrectArg)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+					ChatColor.RED + "Gebruik /custommessage [enable | disable].";
+			else return
+				ChatColor.RED + "Use /custommessage [enable | disable].";
 			
 		} else {
 			return null;
@@ -207,8 +241,14 @@ public class API {
 		saveFiles();
 	}
 	
+	public static void setCustomMessages(boolean bool) {
+		ServerSpawn.set("Custom messages", bool);
+		saveFiles();
+	}
+	
 	public static void setLanguage(ServerSpawnLanguage language) {
 		Messages.set("Language", language);
+		saveFiles();
 	}
 	
 	//

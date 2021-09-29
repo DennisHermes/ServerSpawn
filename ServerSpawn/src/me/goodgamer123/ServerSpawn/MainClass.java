@@ -108,41 +108,27 @@ public final class MainClass extends JavaPlugin implements Listener {
 //===========================================================================================================================//
     
     if (cmd.getName().equalsIgnoreCase("custommessages")) {
-    	
-    	File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-		FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-    	
     	if (args.length <= 0) {
-    		p.sendMessage(ChatColor.RED + "§lIncorrect argument!");
-			p.sendMessage(ChatColor.RED + "Use /custommessage [enable | disable]");
+    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.CustomMessagesIncorrectArg));
     	} else {
     		if (args[0].equalsIgnoreCase("enable")) {
-    			if (config.getString("Custom messages").equalsIgnoreCase("Enabled")) {
-    				p.sendMessage(ChatColor.RED +"Custom join and leave messages are already enabled");
+    			if (API.customMessages()) {
+    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.NotChangedCustomMessages));
 				} else {
-					p.sendMessage(ChatColor.GREEN + "Custom messages enabled!");
-					config.set("Custom messages", "Enabled");
-					try {
-						config.save(customYml);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					API.setCustomMessages(true);
+					p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ChangedCustomMessages));
 				}
     		} else if (args[0].equalsIgnoreCase("disable")) {
-    			if (config.getString("Custom messages").equalsIgnoreCase("Disabled")) {
-    				p.sendMessage(ChatColor.RED +"Custom join and leave messages are already disabled");
+    			if (!API.customMessages()) {
+    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.NotChangedCustomMessages));
 				} else {
-					p.sendMessage(ChatColor.GREEN + "Custom messages disabled!");
-					config.set("Custom messages", "Disabled");
-					try {
-						config.save(customYml);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					API.setCustomMessages(false);
+					p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ChangedCustomMessages));
 				}
     		} else {
-    			p.sendMessage(ChatColor.RED + "§lIncorrect argument!");
-    			p.sendMessage(ChatColor.RED + "Use /custommessage [enable | disable]");
+    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.CustomMessagesIncorrectArg));
     		}
     	}
     }
