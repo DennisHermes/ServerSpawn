@@ -215,6 +215,56 @@ public class API {
 		}
 	}
 	
+	public static void sendChatColorList(Player p) {
+		if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+			p.sendMessage(ChatColor.DARK_RED + "Donker rood: &4");
+			p.sendMessage(ChatColor.RED + "Rood: &c");
+			p.sendMessage(ChatColor.GOLD + "Goud: &6");
+			p.sendMessage(ChatColor.YELLOW + "Geel: &e");
+			p.sendMessage(ChatColor.DARK_GREEN + "Donker groen: &2");
+			p.sendMessage(ChatColor.GREEN + "Groen: &a");
+			p.sendMessage(ChatColor.DARK_AQUA + "Donker Aqua: &3");
+			p.sendMessage(ChatColor.AQUA + "Aqua: &b");
+			p.sendMessage(ChatColor.DARK_BLUE + "Donker blauw: &1");
+			p.sendMessage(ChatColor.BLUE + "Blauw: &9");
+			p.sendMessage(ChatColor.DARK_PURPLE + "Donker paars: &5");
+			p.sendMessage(ChatColor.LIGHT_PURPLE + "Paars: &d");
+			p.sendMessage(ChatColor.WHITE + "Wit: &f");
+			p.sendMessage(ChatColor.DARK_GRAY + "Doker grijs: &8");
+			p.sendMessage(ChatColor.GRAY + "Grijs: &7");
+			p.sendMessage(ChatColor.BLACK + "Zwart: &0");
+			p.sendMessage(ChatColor.WHITE + "Reset Colors: &r");
+			p.sendMessage(ChatColor.BOLD + "Dikgedrukt: &l");
+			p.sendMessage(ChatColor.ITALIC + "Schuingedrukt: &o");
+			p.sendMessage(ChatColor.UNDERLINE + "Onderstreept: &n");
+			p.sendMessage(ChatColor.STRIKETHROUGH + "Doorstreepts: &m");
+			p.sendMessage(ChatColor.WHITE + "Draaiend: &k");
+		} else {
+			p.sendMessage(ChatColor.DARK_RED + "Dark red: &4");
+			p.sendMessage(ChatColor.RED + "Red: &c");
+			p.sendMessage(ChatColor.GOLD + "Gold: &6");
+			p.sendMessage(ChatColor.YELLOW + "Yellow: &e");
+			p.sendMessage(ChatColor.DARK_GREEN + "Dark green: &2");
+			p.sendMessage(ChatColor.GREEN + "Green: &a");
+			p.sendMessage(ChatColor.AQUA + "Aqua: &b");
+			p.sendMessage(ChatColor.DARK_AQUA + "Dark Aqua: &3");
+			p.sendMessage(ChatColor.DARK_BLUE + "Dark blue: &1");
+			p.sendMessage(ChatColor.BLUE + "Blue: &9");
+			p.sendMessage(ChatColor.LIGHT_PURPLE + "light purple: &d");
+			p.sendMessage(ChatColor.DARK_PURPLE + "Dark purple: &5");
+			p.sendMessage(ChatColor.WHITE + "White: &f");
+			p.sendMessage(ChatColor.GRAY + "Gray: &7");
+			p.sendMessage(ChatColor.DARK_GRAY + "Dark gray: &8");
+			p.sendMessage(ChatColor.BLACK + "Black: &0");
+			p.sendMessage(ChatColor.WHITE + "Reset Colors: &r");
+			p.sendMessage(ChatColor.BOLD + "Bold: &l");
+			p.sendMessage(ChatColor.ITALIC + "Italic: &o");
+			p.sendMessage(ChatColor.UNDERLINE + "Underlined: &n");
+			p.sendMessage(ChatColor.STRIKETHROUGH + "Crossed out: &m");
+			p.sendMessage(ChatColor.WHITE + "Spinning: &k");
+		}
+	}
+	
 	//
 	//Booleans
 	//
