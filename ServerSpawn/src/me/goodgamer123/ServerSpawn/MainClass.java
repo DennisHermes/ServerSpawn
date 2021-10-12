@@ -129,42 +129,29 @@ public final class MainClass extends JavaPlugin implements Listener {
 	//===========================================================================================================================//
 	    
 	    if (cmd.getName().equalsIgnoreCase("joinmessage")) {
-	    	
-	    	File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-			FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-	    	
 	    	if (args.length <= 0) {
-	    		p.sendMessage(ChatColor.RED + "§lIncorrect argument!");
-				p.sendMessage(ChatColor.RED + "Use /joinmessage [set | get]");
+	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.JoinMessageIncorrectArg));
 	    	} else {
 	    		if (args[0].equalsIgnoreCase("get")) {
-	    			
-	    			String message = config.getString("Custom Joinmessage");
-					message = ChatColor.translateAlternateColorCodes('&', message);
-					message = message.replace("%player%", "(playername)");
-					message = message.replace("%Player%", "(playername)");
-					p.sendMessage(message);
-					
+					p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.GetJoinMessage));
+					p.sendMessage(API.getJoinMessage(p));
 	    		} else if (args[0].equalsIgnoreCase("set")) {
-	    			
-	    			String message = "";
-		    		for(int i = 1; i < args.length; i++) {
-		    			message = message + args[i] + " ";
-		    		}
-		    		config.set("Custom Joinmessage", message);
-		    		try {
-						config.save(customYml);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-		    		message = ChatColor.translateAlternateColorCodes('&', message);
-					message = message.replace("%player%", "(playername)");
-					message = message.replace("%Player%", "(playername)");
-					p.sendMessage(ChatColor.BLUE + "Custom join message set to:");
-					p.sendMessage(message);
+	    			if (args.length <= 1) {
+	    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+	    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SetJoinMessageIncorrectArg));
+	    			} else {
+		    			String message = "";
+			    		for(int i = 1; i < args.length; i++) {
+			    			message = message + args[i] + " ";
+			    		}
+			    		API.setJoinMessage(message);
+						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.GetJoinMessage));
+						p.sendMessage(API.getJoinMessage(p));
+	    			}
 	    		} else {
-	    			p.sendMessage(ChatColor.RED + "§lIncorrect argument!");
-	    			p.sendMessage(ChatColor.RED + "Use /joinmessage [set | get]");
+	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.JoinMessageIncorrectArg));
 	    		}
 	    	}
 	    }
