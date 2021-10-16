@@ -321,6 +321,16 @@ public class API {
 		saveFiles();
 	}
 	
+	public static void setJoinMessage(String message) {
+		ServerSpawn.set("Custom messages.Join message", message);
+		saveFiles();
+	}
+	
+	public static void setQuitMessage(String message) {
+		ServerSpawn.set("Custom messages.Join message", message);
+		saveFiles();
+	}
+	
 	public static void setLanguage(ServerSpawnLanguage language) {
 		Messages.set("Language", language);
 		saveFiles();
