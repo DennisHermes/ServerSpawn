@@ -30,3 +30,6 @@ commands:
   custommessages:
     descriptoin: enable and disable the custom messages.
     permission: serverspawn.custommessages
+  spawncommands:
+    descriptoin: enable and disable spawn commands.
+    permission: serverspawn.custommessages

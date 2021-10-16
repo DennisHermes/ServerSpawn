@@ -27,6 +27,7 @@ public final class MainClass extends JavaPlugin implements Listener {
 		getCommand("fake").setExecutor(this);
 		getCommand("joinmessage").setExecutor(this);
 		getCommand("leavemessage").setExecutor(this);
+		getCommand("spawncommands").setExecutor(this);
 		getCommand("colorcodes").setExecutor(this);
 		
 		getCommand("custommessages").setTabCompleter(new TabCompleterClass());
@@ -34,6 +35,7 @@ public final class MainClass extends JavaPlugin implements Listener {
 		getCommand("fake").setTabCompleter(new TabCompleterClass());
 		getCommand("joinmessage").setTabCompleter(new TabCompleterClass());
 		getCommand("leavemessage").setTabCompleter(new TabCompleterClass());
+		getCommand("spawncommands").setTabCompleter(new TabCompleterClass());
 		
 		API.loadFiles(this);
 	}
@@ -209,6 +211,77 @@ public final class MainClass extends JavaPlugin implements Listener {
 	    	}
 	    } 
 	
+	//===========================================================================================================================//
+	    
+	    if (cmd.getName().equalsIgnoreCase("spawncommands")) {
+	    	if (args.length <= 0) {
+	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SpawnCommandsIncorrectArg));
+	    	} else {
+	    		if (args[0].equalsIgnoreCase("hub")) {
+	    			if (args[1].equalsIgnoreCase("enable")) {
+		    			if (API.spawnCommandIsEnabled(spawnCommand.Hub)) {
+		    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.NotChangedHubCommand));
+		    			} else {
+		    				API.setSpawnCommand(spawnCommand.Hub, true);
+		    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ChangedHubCommand));
+		    			}
+	    			} else if (args[1].equalsIgnoreCase("disable")) {
+	    				if (!API.spawnCommandIsEnabled(spawnCommand.Hub)) {
+		    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.NotChangedHubCommand));
+		    			} else {
+		    				API.setSpawnCommand(spawnCommand.Hub, false);
+		    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ChangedHubCommand));
+		    			}
+	    			} else {
+	    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+			    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SpawnCommandsIncorrectArg));
+	    			}
+	    		} else if (args[0].equalsIgnoreCase("spawn")) {
+	    			if (args[1].equalsIgnoreCase("enable")) {
+		    			if (API.spawnCommandIsEnabled(spawnCommand.Spawn)) {
+		    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.NotChangedSpawnCommand));
+		    			} else {
+		    				API.setSpawnCommand(spawnCommand.Spawn, true);
+		    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ChangedSpawnCommand));
+		    			}
+	    			} else if (args[1].equalsIgnoreCase("disable")) {
+	    				if (!API.spawnCommandIsEnabled(spawnCommand.Spawn)) {
+		    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.NotChangedSpawnCommand));
+		    			} else {
+		    				API.setSpawnCommand(spawnCommand.Spawn, false);
+		    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ChangedSpawnCommand));
+		    			}
+	    			} else {
+	    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+			    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SpawnCommandsIncorrectArg));
+	    			}
+	    		} else if (args[0].equalsIgnoreCase("lobby")) {
+	    			if (args[1].equalsIgnoreCase("enable")) {
+		    			if (API.spawnCommandIsEnabled(spawnCommand.Lobby)) {
+		    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.NotChangedLobbyCommand));
+		    			} else {
+		    				API.setSpawnCommand(spawnCommand.Lobby, true);
+		    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ChangedLobbyCommand));
+		    			}
+	    			} else if (args[1].equalsIgnoreCase("disable")) {
+	    				if (!API.spawnCommandIsEnabled(spawnCommand.Lobby)) {
+		    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.NotChangedLobbyCommand));
+		    			} else {
+		    				API.setSpawnCommand(spawnCommand.Lobby, false);
+		    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ChangedLobbyCommand));
+		    			}
+	    			} else {
+	    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+			    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SpawnCommandsIncorrectArg));
+	    			}
+	    		} else {
+	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+		    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SpawnCommandsIncorrectArg));
+	    		}
+	    	}
+	    }
+	    
 	//===========================================================================================================================//
 	    
 	    if (cmd.getName().equalsIgnoreCase("colorcodes")) {

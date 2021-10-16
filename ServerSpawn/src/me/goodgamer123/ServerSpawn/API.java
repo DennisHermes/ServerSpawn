@@ -111,10 +111,17 @@ public class API {
 		GetJoinMessage,
 		GetQuitMessage,
 		SpawnCommandDisabled,
+		ChangedHubCommand,
+		NotChangedHubCommand,
+		ChangedSpawnCommand,
+		NotChangedSpawnCommand,
+		ChangedLobbyCommand,
+		NotChangedLobbyCommand,
 		JoinMessageIncorrectArg,
 		SetJoinMessageIncorrectArg,
 		QuitMessageIncorrectArg,
-		SetQuitMessageIncorrectArg
+		SetQuitMessageIncorrectArg,
+		SpawnCommandsIncorrectArg
 	}
 	
 	public static String getMessage(ServerSpawnMessages messageType) {
@@ -208,6 +215,78 @@ public class API {
 			else return
 				ChatColor.RED + "This command is disabled!";
 			
+		} else if (messageType.equals(ServerSpawnMessages.ChangedHubCommand)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String HubCommand;
+				if (spawnCommandIsEnabled(spawnCommand.Hub)) HubCommand = "ingeschakeld"; else HubCommand = "uitgeschakeld";
+				return ChatColor.GREEN + "Het /hub commando is nu " + ChatColor.DARK_GREEN + HubCommand + ChatColor.GREEN + "!";
+			} else {
+				String HubCommand;
+				if (spawnCommandIsEnabled(spawnCommand.Hub)) HubCommand = "enabled"; else HubCommand = "disabled";
+				return ChatColor.GREEN + "The /hub command is now " + ChatColor.DARK_GREEN + HubCommand + ChatColor.GREEN + "!";
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.NotChangedHubCommand)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String HubCommand;
+				if (spawnCommandIsEnabled(spawnCommand.Hub)) HubCommand = "ingeschakeld"; else HubCommand = "uitgeschakeld";
+				return ChatColor.RED + "Het /hub commando is al " + ChatColor.DARK_RED + HubCommand + ChatColor.RED + "!";
+			} else {
+				String HubCommand;
+				if (spawnCommandIsEnabled(spawnCommand.Hub)) HubCommand = "enabled"; else HubCommand = "disabled";
+				return ChatColor.RED + "The /hub command is allready " + ChatColor.DARK_RED + HubCommand + ChatColor.RED + "!";
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.ChangedSpawnCommand)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String SpawnCommand;
+				if (spawnCommandIsEnabled(spawnCommand.Spawn)) SpawnCommand = "ingeschakeld"; else SpawnCommand = "uitgeschakeld";
+				return ChatColor.GREEN + "Het /spawn commando is nu " + ChatColor.DARK_GREEN + SpawnCommand + ChatColor.GREEN + "!";
+			} else {
+				String SpawnCommand;
+				if (spawnCommandIsEnabled(spawnCommand.Spawn)) SpawnCommand = "enabled"; else SpawnCommand = "disabled";
+				return ChatColor.GREEN + "The /spawn command is now " + ChatColor.DARK_GREEN + SpawnCommand + ChatColor.GREEN + "!";
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.NotChangedSpawnCommand)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String SpawnCommand;
+				if (spawnCommandIsEnabled(spawnCommand.Spawn)) SpawnCommand = "ingeschakeld"; else SpawnCommand = "uitgeschakeld";
+				return ChatColor.RED + "Het /spawn commando is al " + ChatColor.DARK_RED + SpawnCommand + ChatColor.RED + "!";
+			} else {
+				String SpawnCommand;
+				if (spawnCommandIsEnabled(spawnCommand.Spawn)) SpawnCommand = "enabled"; else SpawnCommand = "disabled";
+				return ChatColor.RED + "The /spawn command is allready " + ChatColor.DARK_RED + SpawnCommand + ChatColor.RED + "!";
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.ChangedLobbyCommand)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String LobbyCommand;
+				if (spawnCommandIsEnabled(spawnCommand.Lobby)) LobbyCommand = "ingeschakeld"; else LobbyCommand = "uitgeschakeld";
+				return ChatColor.GREEN + "Het /lobby commando is nu " + ChatColor.DARK_GREEN + LobbyCommand + ChatColor.GREEN + "!";
+			} else {
+				String LobbyCommand;
+				if (spawnCommandIsEnabled(spawnCommand.Lobby)) LobbyCommand = "enabled"; else LobbyCommand = "disabled";
+				return ChatColor.GREEN + "The /lobby command is now " + ChatColor.DARK_GREEN + LobbyCommand + ChatColor.GREEN + "!";
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.NotChangedSpawnCommand)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String LobbyCommand;
+				if (spawnCommandIsEnabled(spawnCommand.Lobby)) LobbyCommand = "ingeschakeld"; else LobbyCommand = "uitgeschakeld";
+				return ChatColor.RED + "Het /lobby commando is al " + ChatColor.DARK_RED + LobbyCommand + ChatColor.RED + "!";
+			} else {
+				String LobbyCommand;
+				if (spawnCommandIsEnabled(spawnCommand.Lobby)) LobbyCommand = "enabled"; else LobbyCommand = "disabled";
+				return ChatColor.RED + "The /lobby command is allready " + ChatColor.DARK_RED + LobbyCommand + ChatColor.RED + "!";
+			}
+			
 		} else if (messageType.equals(ServerSpawnMessages.NeedToBeAPlayer)) {
 			
 			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
@@ -271,9 +350,14 @@ public class API {
 			else return
 					ChatColor.RED + "Use /leavemessage set <message>.";
 			
-		} else {
-			return null;
-		}
+		} else if (messageType.equals(ServerSpawnMessages.SpawnCommandsIncorrectArg)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+					ChatColor.RED + "Gebruik /spawncommands [hub | spawn | lobby] [enable | disable].";
+			else return
+					ChatColor.RED + "Use /spawncommands [hub | spawn | lobby] [enable | disable].";
+			
+		} else return null;
 	}
 	
 	public static void sendChatColorList(Player p) {
@@ -376,6 +460,13 @@ public class API {
 	
 	public static void setQuitMessage(String message) {
 		ServerSpawn.set("Custom messages.Join message", message);
+		saveFiles();
+	}
+	
+	public static void setSpawnCommand(spawnCommand spawnCommandName, boolean bool) {
+		if (spawnCommandName.equals(spawnCommand.Hub)) ServerSpawn.set("Spawn Commands Enabled.Hub", bool);
+		else if (spawnCommandName.equals(spawnCommand.Spawn)) ServerSpawn.set("Spawn Commands Enabled.Spawn", bool);
+		else ServerSpawn.set("Spawn Commands Enabled.Lobby", bool);
 		saveFiles();
 	}
 	
