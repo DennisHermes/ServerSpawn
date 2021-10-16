@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class OnJoin implements Listener {
+public class OnJoinLeave implements Listener {
 	
 	
 	@EventHandler(priority = EventPriority.HIGHEST)

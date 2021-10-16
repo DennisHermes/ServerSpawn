@@ -4,17 +4,15 @@ import java.io.File;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.goodgamer123.ServerSpawn.API.ServerSpawnMessages;
+import me.goodgamer123.ServerSpawn.API.spawnCommand;
 
 public final class MainClass extends JavaPlugin implements Listener {
   
@@ -22,7 +20,7 @@ public final class MainClass extends JavaPlugin implements Listener {
 	FileConfiguration newConfigz;
 	
 	public void onEnable() {
-		Bukkit.getServer().getPluginManager().registerEvents(new OnJoin(), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new OnJoinLeave(), this);
 		
 		getCommand("custommessages").setExecutor(this);
 		getCommand("serverspawn").setExecutor(this);
@@ -31,11 +29,11 @@ public final class MainClass extends JavaPlugin implements Listener {
 		getCommand("leavemessage").setExecutor(this);
 		getCommand("colorcodes").setExecutor(this);
 		
-		this.getCommand("custommessages").setTabCompleter(new TabCompleterClass());
-		this.getCommand("serverspawn").setTabCompleter(new TabCompleterClass());
-		this.getCommand("fake").setTabCompleter(new TabCompleterClass());
-		this.getCommand("joinmessage").setTabCompleter(new TabCompleterClass());
-		this.getCommand("leavemessage").setTabCompleter(new TabCompleterClass());
+		getCommand("custommessages").setTabCompleter(new TabCompleterClass());
+		getCommand("serverspawn").setTabCompleter(new TabCompleterClass());
+		getCommand("fake").setTabCompleter(new TabCompleterClass());
+		getCommand("joinmessage").setTabCompleter(new TabCompleterClass());
+		getCommand("leavemessage").setTabCompleter(new TabCompleterClass());
 		
 		API.loadFiles(this);
 	}
@@ -188,63 +186,27 @@ public final class MainClass extends JavaPlugin implements Listener {
 	//===========================================================================================================================//
 	    
 	    if (cmd.getName().equalsIgnoreCase("hub")) {
-	    	
-	    	File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-			FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-	    	
-			if (config.getString("ServerSpawn.World").equalsIgnoreCase("")) {
-				p.sendMessage(ChatColor.RED + "The ServerSpawn is not set!");
-			} else {
-				double X = config.getDouble("ServerSpawn.X");
-				double Y = config.getDouble("ServerSpawn.Y");
-				double Z = config.getDouble("ServerSpawn.Z");
-				float Pitch = (float) config.getDouble("ServerSpawn.Pitch");
-				float Yaw = (float) config.getDouble("ServerSpawn.Yaw");
-				String WorldName = config.getString("ServerSpawn.World");
-				World World = Bukkit.getWorld(WorldName);
-				Location loc = new Location(World, X, Y, Z, Yaw, Pitch);
-				p.teleport(loc);
-			}
+	    	if (API.spawnCommandIsEnabled(spawnCommand.Hub)) {
+	    		p.teleport(API.getServerSpawn());
+	    	} else {
+	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SpawnCommandDisabled));
+	    	}
 	    }
 	    
 	    if (cmd.getName().equalsIgnoreCase("spawn")) {
-	    	
-	    	File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-			FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-	    	
-			if (config.getString("ServerSpawn.World").equalsIgnoreCase("")) {
-				p.sendMessage(ChatColor.RED + "The ServerSpawn is not set!");
-			} else {
-				double X = config.getDouble("ServerSpawn.X");
-				double Y = config.getDouble("ServerSpawn.Y");
-				double Z = config.getDouble("ServerSpawn.Z");
-				float Pitch = (float) config.getDouble("ServerSpawn.Pitch");
-				float Yaw = (float) config.getDouble("ServerSpawn.Yaw");
-				String WorldName = config.getString("ServerSpawn.World");
-				World World = Bukkit.getWorld(WorldName);
-				Location loc = new Location(World, X, Y, Z, Yaw, Pitch);
-				p.teleport(loc);
-			}
+	    	if (API.spawnCommandIsEnabled(spawnCommand.Spawn)) {
+	    		p.teleport(API.getServerSpawn());
+	    	} else {
+	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SpawnCommandDisabled));
+	    	}
 	    }
 	    
 	    if (cmd.getName().equalsIgnoreCase("lobby")) {
-	    	
-	    	File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-			FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-	    	
-			if (config.getString("ServerSpawn.World").equalsIgnoreCase("")) {
-				p.sendMessage(ChatColor.RED + "The ServerSpawn is not set!");
-			} else {
-				double X = config.getDouble("ServerSpawn.X");
-				double Y = config.getDouble("ServerSpawn.Y");
-				double Z = config.getDouble("ServerSpawn.Z");
-				float Pitch = (float) config.getDouble("ServerSpawn.Pitch");
-				float Yaw = (float) config.getDouble("ServerSpawn.Yaw");
-				String WorldName = config.getString("ServerSpawn.World");
-				World World = Bukkit.getWorld(WorldName);
-				Location loc = new Location(World, X, Y, Z, Yaw, Pitch);
-				p.teleport(loc);
-			}
+	    	if (API.spawnCommandIsEnabled(spawnCommand.Lobby)) {
+	    		p.teleport(API.getServerSpawn());
+	    	} else {
+	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SpawnCommandDisabled));
+	    	}
 	    } 
 	
 	//===========================================================================================================================//

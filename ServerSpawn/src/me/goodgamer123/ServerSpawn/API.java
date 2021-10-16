@@ -29,6 +29,9 @@ public class API {
 			ServerSpawn.set("Server spawn", null);
     		ServerSpawn.set("Teleport on join", true);
     		ServerSpawn.set("Custom messages", true);
+    		ServerSpawn.set("Spawn Commands Enabled.Hub", true);
+    		ServerSpawn.set("Spawn Commands Enabled.Spawn", true);
+    		ServerSpawn.set("Spawn Commands Enabled.Lobby", true);
 			saveFiles();
 		}
 		
@@ -107,6 +110,7 @@ public class API {
 		NotChangedCustomMessages, 
 		GetJoinMessage,
 		GetQuitMessage,
+		SpawnCommandDisabled,
 		JoinMessageIncorrectArg,
 		SetJoinMessageIncorrectArg,
 		QuitMessageIncorrectArg,
@@ -196,6 +200,13 @@ public class API {
 			} else {
 				return ChatColor.GREEN + "Te current leave message is:";
 			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.SpawnCommandDisabled)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+				ChatColor.RED + "Dit commando is uitgeschakeld!";
+			else return
+				ChatColor.RED + "This command is disabled!";
 			
 		} else if (messageType.equals(ServerSpawnMessages.NeedToBeAPlayer)) {
 			
@@ -325,6 +336,18 @@ public class API {
 	
 	public static boolean customMessages() {
 		return ServerSpawn.getBoolean("Custom messages");
+	}
+	
+	public static enum spawnCommand {
+		Hub,
+		Spawn,
+		Lobby
+	}
+	
+	public static boolean spawnCommandIsEnabled(spawnCommand spawnCommandName) {
+		if (spawnCommandName.equals(spawnCommand.Hub)) return ServerSpawn.getBoolean("Spawn Commands Enabled.Hub");
+		else if (spawnCommandName.equals(spawnCommand.Spawn)) return ServerSpawn.getBoolean("Spawn Commands Enabled.Spawn");
+		else return ServerSpawn.getBoolean("Spawn Commands Enabled.Lobby");
 	}
 	
 	//
