@@ -106,8 +106,11 @@ public class API {
 		ChangedCustomMessages,
 		NotChangedCustomMessages, 
 		GetJoinMessage,
+		GetQuitMessage,
 		JoinMessageIncorrectArg,
-		SetJoinMessageIncorrectArg
+		SetJoinMessageIncorrectArg,
+		QuitMessageIncorrectArg,
+		SetQuitMessageIncorrectArg
 	}
 	
 	public static String getMessage(ServerSpawnMessages messageType) {
@@ -186,6 +189,14 @@ public class API {
 				return ChatColor.GREEN + "Te current join message is:";
 			}
 			
+		} else if (messageType.equals(ServerSpawnMessages.GetQuitMessage)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				return ChatColor.GREEN + "Het huidige verlatings bericht is:";
+			} else {
+				return ChatColor.GREEN + "Te current leave message is:";
+			}
+			
 		} else if (messageType.equals(ServerSpawnMessages.NeedToBeAPlayer)) {
 			
 			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
@@ -233,7 +244,21 @@ public class API {
 			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
 					ChatColor.RED + "Gebruik /joinmessage set <bericht>.";
 			else return
-					ChatColor.RED + "Use /joinmessage set or <message>.";
+					ChatColor.RED + "Use /joinmessage set <message>.";
+			
+		} else if (messageType.equals(ServerSpawnMessages.QuitMessageIncorrectArg)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+					ChatColor.RED + "Gebruik /joinmessage [set | get].";
+			else return
+					ChatColor.RED + "Use /joinmessage [set | get].";
+			
+		} else if (messageType.equals(ServerSpawnMessages.SetQuitMessageIncorrectArg)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+					ChatColor.RED + "Gebruik /leavemessage set <bericht>.";
+			else return
+					ChatColor.RED + "Use /leavemessage set <message>.";
 			
 		} else {
 			return null;

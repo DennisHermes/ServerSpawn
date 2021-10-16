@@ -1,7 +1,6 @@
 package me.goodgamer123.ServerSpawn;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -159,40 +158,29 @@ public final class MainClass extends JavaPlugin implements Listener {
 	//===========================================================================================================================//
 	    
 	    if (cmd.getName().equalsIgnoreCase("leavemessage")) {
-	    	
-	    	File customYml = new File(MainClass.getPlugin(MainClass.class).getDataFolder() + "/ServerSpawn.yml");
-			FileConfiguration config = YamlConfiguration.loadConfiguration(customYml);
-	    	
 	    	if (args.length <= 0) {
-	    		p.sendMessage(ChatColor.RED + "§lIncorrect argument!");
-				p.sendMessage(ChatColor.RED + "Use /leavemessage [set | get]");
+	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.QuitMessageIncorrectArg));
 	    	} else {
 	    		if (args[0].equalsIgnoreCase("get")) {
-	    			
-	    			String message = config.getString("Custom Leavemessage");
-					message = ChatColor.translateAlternateColorCodes('&', message);
-					message = message.replace("%player%", "(playername)");
-					message = message.replace("%Player%", "(playername)");
-					p.sendMessage(message);
-					
+					p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.GetQuitMessage));
+					p.sendMessage(API.getJoinMessage(p));
 	    		} else if (args[0].equalsIgnoreCase("set")) {
-	    			
-	    			String message = "";
-		    		for(int i = 1; i < args.length; i++) {
-		    			message = message + args[i] + " ";
-		    		}
-		    		
-		    		config.set("Custom Leavemessage", message);
-		    		try {
-						config.save(customYml);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-		    		message = ChatColor.translateAlternateColorCodes('&', message);
-					message = message.replace("%player%", "(playername)");
-					message = message.replace("%Player%", "(playername)");
-					p.sendMessage(ChatColor.BLUE + "Custom leave message set to:");
-					p.sendMessage(message);
+	    			if (args.length <= 1) {
+	    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+	    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SetQuitMessageIncorrectArg));
+	    			} else {
+		    			String message = "";
+			    		for(int i = 1; i < args.length; i++) {
+			    			message = message + args[i] + " ";
+			    		}
+			    		API.setQuitMessage(message);
+						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.GetQuitMessage));
+						p.sendMessage(API.getJoinMessage(p));
+	    			}
+	    		} else {
+	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.QuitMessageIncorrectArg));
 	    		}
 	    	}
 	    }
