@@ -14,7 +14,7 @@ public class OnJoinLeave implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
 		  
-		if (API.teleportOnJoin() || !p.hasPlayedBefore()) {
+		if ((API.teleportOnJoin() || !p.hasPlayedBefore()) && API.getServerSpawn() != null) {
 			p.teleport(API.getServerSpawn());
 		}
 		

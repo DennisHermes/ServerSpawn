@@ -72,6 +72,46 @@ public final class MainClass extends JavaPlugin implements Listener {
 	    				API.setTeleportOnJoin(false);
 	    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ChangedTeleportOnJoin));
 	    			}
+	    		} else if (args[0].equalsIgnoreCase("settings")) {
+	    			if (args.length <= 1) {
+	    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+	    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnSettingsIncorrectArg));
+	    			} else {
+		    			if (args[1].equalsIgnoreCase("prefix")) {
+		    				if (args.length <= 2) {
+			    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+			    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnPrefixIncorrectArg));
+			    			} else {
+			    				if (args[1].equalsIgnoreCase("set")) {
+			    					
+			    				} else if (args[1].equalsIgnoreCase("disable")) {
+			    					
+			    				} else if (args[1].equalsIgnoreCase("enable")) {
+			    					
+			    				} else {
+			    					p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+				    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnPrefixIncorrectArg));
+			    				}
+			    			}
+				    	} else if (args[1].equalsIgnoreCase("language")) {
+				    		if (args.length <= 2) {
+			    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+			    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnLanguageIncorrectArg));
+			    			} else {
+			    				if (args[1].equalsIgnoreCase("english")) {
+			    					
+			    				} else if (args[1].equalsIgnoreCase("dutch")) {
+			    					
+			    				} else {
+			    					p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+				    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnLanguageIncorrectArg));
+			    				}
+			    			}
+				    	} else {
+				    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+		    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnSettingsIncorrectArg));
+				    	}
+	    			}
 	    		} else {
 	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
 	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnIncorrectArg));
@@ -81,7 +121,7 @@ public final class MainClass extends JavaPlugin implements Listener {
 	    
 	//===========================================================================================================================//
 	    
-		if (cmd.getName().equalsIgnoreCase("fake")) {
+		else if (cmd.getName().equalsIgnoreCase("fake")) {
 			if (args.length <= 0) {
 				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
 				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.FakeIncorrectArg));
@@ -99,7 +139,7 @@ public final class MainClass extends JavaPlugin implements Listener {
 	    
 	//===========================================================================================================================//
 	    
-	    if (cmd.getName().equalsIgnoreCase("custommessages")) {
+		else if (cmd.getName().equalsIgnoreCase("custommessages")) {
 	    	if (args.length <= 0) {
 	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
 				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.CustomMessagesIncorrectArg));
@@ -127,7 +167,7 @@ public final class MainClass extends JavaPlugin implements Listener {
 	    
 	//===========================================================================================================================//
 	    
-	    if (cmd.getName().equalsIgnoreCase("joinmessage")) {
+	    else if (cmd.getName().equalsIgnoreCase("joinmessage")) {
 	    	if (args.length <= 0) {
 	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
 	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.JoinMessageIncorrectArg));
@@ -157,7 +197,7 @@ public final class MainClass extends JavaPlugin implements Listener {
 	    
 	//===========================================================================================================================//
 	    
-	    if (cmd.getName().equalsIgnoreCase("leavemessage")) {
+	    else if (cmd.getName().equalsIgnoreCase("leavemessage")) {
 	    	if (args.length <= 0) {
 	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
 	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.QuitMessageIncorrectArg));
@@ -187,25 +227,37 @@ public final class MainClass extends JavaPlugin implements Listener {
 	    
 	//===========================================================================================================================//
 	    
-	    if (cmd.getName().equalsIgnoreCase("hub")) {
+	    else if (cmd.getName().equalsIgnoreCase("hub")) {
 	    	if (API.spawnCommandIsEnabled(spawnCommand.Hub)) {
-	    		p.teleport(API.getServerSpawn());
+	    		if (API.getServerSpawn() == null) {
+	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnNotSet));
+	    		} else {
+	    			p.teleport(API.getServerSpawn());
+	    		}
 	    	} else {
 	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SpawnCommandDisabled));
 	    	}
 	    }
 	    
-	    if (cmd.getName().equalsIgnoreCase("spawn")) {
+	    else if (cmd.getName().equalsIgnoreCase("spawn")) {
 	    	if (API.spawnCommandIsEnabled(spawnCommand.Spawn)) {
-	    		p.teleport(API.getServerSpawn());
+	    		if (API.getServerSpawn() == null) {
+	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnNotSet));
+	    		} else {
+	    			p.teleport(API.getServerSpawn());
+	    		}
 	    	} else {
 	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SpawnCommandDisabled));
 	    	}
 	    }
 	    
-	    if (cmd.getName().equalsIgnoreCase("lobby")) {
+	    else if (cmd.getName().equalsIgnoreCase("lobby")) {
 	    	if (API.spawnCommandIsEnabled(spawnCommand.Lobby)) {
-	    		p.teleport(API.getServerSpawn());
+	    		if (API.getServerSpawn() == null) {
+	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnNotSet));
+	    		} else {
+	    			p.teleport(API.getServerSpawn());
+	    		}
 	    	} else {
 	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SpawnCommandDisabled));
 	    	}
@@ -213,7 +265,7 @@ public final class MainClass extends JavaPlugin implements Listener {
 	
 	//===========================================================================================================================//
 	    
-	    if (cmd.getName().equalsIgnoreCase("spawncommands")) {
+	    else if (cmd.getName().equalsIgnoreCase("spawncommands")) {
 	    	if (args.length <= 0) {
 	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
 	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SpawnCommandsIncorrectArg));
@@ -284,10 +336,18 @@ public final class MainClass extends JavaPlugin implements Listener {
 	    
 	//===========================================================================================================================//
 	    
-	    if (cmd.getName().equalsIgnoreCase("colorcodes")) {
+	    else if (cmd.getName().equalsIgnoreCase("colorcodes")) {
 	      API.sendChatColorList(p);
 	    }
 	    
+	//===========================================================================================================================//
+	    
+	    else {
+	    	//TODO
+	    }
+		
+	//===========================================================================================================================//
+		
 		return false; 
 	}
 }

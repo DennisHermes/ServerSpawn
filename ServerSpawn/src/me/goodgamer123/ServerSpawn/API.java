@@ -25,6 +25,10 @@ public class API {
 		ServerSpawnFile = new File(MainClass.getDataFolder(), "/ServerSpawn.yml");
 		ServerSpawn = YamlConfiguration.loadConfiguration(ServerSpawnFile);
 		
+		final File MessagesYml = new File(MainClass.getDataFolder() + "/Messages.yml");
+		MessagesFile = new File(MainClass.getDataFolder(), "/Messages.yml");
+		Messages = YamlConfiguration.loadConfiguration(MessagesFile);
+		
 		if (!ServerSpawnYml.exists()) {
 			ServerSpawn.set("Server spawn", null);
     		ServerSpawn.set("Teleport on join", true);
@@ -35,16 +39,11 @@ public class API {
 			saveFiles();
 		}
 		
-
-		final File MessagesYml = new File(MainClass.getDataFolder() + "/Messages.yml");
-		MessagesFile = new File(MainClass.getDataFolder(), "/Messages.yml");
-		Messages = YamlConfiguration.loadConfiguration(MessagesFile);
-		
 		if (!MessagesYml.exists()) {
 			Messages.set("Custom messages.Join message", "&0[&2+&0] &8%playername%");
 			Messages.set("Custom messages.Quit message", "&0[&4-&0] &8%playername%");
 			Messages.set("Prefix", "&0&l[&2Server&aSpawn&0] ");
-			Messages.set("Language", ServerSpawnLanguage.ENGLISH);
+			Messages.set("Language", ServerSpawnLanguage.ENGLISH.toString());
 			saveFiles();
 		}
 	}
@@ -88,11 +87,12 @@ public class API {
 	//Additional message info
 	
 	public static ServerSpawnLanguage getLanguage() {
-		return (ServerSpawnLanguage) Messages.get("Language");
+		if (Messages.getString("Language").equals(ServerSpawnLanguage.DUTCH.toString())) return ServerSpawnLanguage.DUTCH;
+		else return ServerSpawnLanguage.ENGLISH;
 	}
 	
 	public static String getPrefix() {
-		return ChatColor.translateAlternateColorCodes('&', ServerSpawn.getString("Prefix"));
+		return ChatColor.translateAlternateColorCodes('&', Messages.getString("Prefix"));
 	}
 	
 	//Messages
@@ -117,6 +117,7 @@ public class API {
 		NotChangedSpawnCommand,
 		ChangedLobbyCommand,
 		NotChangedLobbyCommand,
+		ServerSpawnNotSet,
 		JoinMessageIncorrectArg,
 		SetJoinMessageIncorrectArg,
 		QuitMessageIncorrectArg,
@@ -287,6 +288,13 @@ public class API {
 				return ChatColor.RED + "The /lobby command is allready " + ChatColor.DARK_RED + LobbyCommand + ChatColor.RED + "!";
 			}
 			
+		} else if (messageType.equals(ServerSpawnMessages.ServerSpawnNotSet)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+				ChatColor.RED + "De server spawn is nog niet gezet!";
+			else return
+				ChatColor.RED + "The server spawn in not set!";
+			
 		} else if (messageType.equals(ServerSpawnMessages.NeedToBeAPlayer)) {
 			
 			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
@@ -304,9 +312,9 @@ public class API {
 		} else if (messageType.equals(ServerSpawnMessages.ServerSpawnIncorrectArg)) {
 			
 			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
-				ChatColor.RED + "Gebruik /serverspawn [set | get | enable | disable].";
+				ChatColor.RED + "Gebruik /serverspawn [set | get | enable | disable | settings].";
 			else return
-				ChatColor.RED + "Use /serverspawn [set | get | enable | disable].";
+				ChatColor.RED + "Use /serverspawn [set | get | enable | disable | settings].";
 			
 		} else if (messageType.equals(ServerSpawnMessages.FakeIncorrectArg)) {
 			

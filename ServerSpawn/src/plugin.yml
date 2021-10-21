@@ -1,9 +1,9 @@
 main: me.goodgamer123.ServerSpawn.MainClass
-api-version: 1.15
+api-version: 1.17
 name: ServerSpawn
 author: goodgamer123
 description: config the spawn location and join and leave messages.
-version: 2.3
+version: 3.0.0
 
 commands:
   serverspawn:
