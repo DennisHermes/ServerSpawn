@@ -37,17 +37,17 @@ public class API {
     		ServerSpawn.set("Spawn Commands Enabled.Hub", true);
     		ServerSpawn.set("Spawn Commands Enabled.Spawn", true);
     		ServerSpawn.set("Spawn Commands Enabled.Lobby", true);
-			saveFiles();
 		}
 		
 		if (!MessagesYml.exists()) {
 			Messages.set("Custom messages.Join message", "&0[&2+&0] &8%playername%");
 			Messages.set("Custom messages.Quit message", "&0[&4-&0] &8%playername%");
-			Messages.set("Prefix.Message", "&0&l[&2Server&aSpawn&0] ");
+			Messages.set("Prefix.Message", "&0&l[&2&lServer&a&lSpawn&0&l] ");
 			Messages.set("Prefix.Enabled", true);
 			Messages.set("Language", ServerSpawnLanguage.ENGLISH.toString());
-			saveFiles();
 		}
+		
+		saveFiles();
 	}
 
 	//
@@ -224,9 +224,9 @@ public class API {
 		} else if (messageType.equals(ServerSpawnMessages.SetPrefixMessage)) {
 			
 			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
-				return ChatColor.GREEN + "De prefix is ingesteld op: " + getPrefix();
+				return ChatColor.GREEN + "De prefix is ingesteld op: " + ChatColor.RESET + getPrefix();
 			} else {
-				return ChatColor.GREEN + "The prefix is set to: " + getPrefix();
+				return ChatColor.GREEN + "The prefix is set to: " + ChatColor.RESET + getPrefix();
 			}
 			
 		} else if (messageType.equals(ServerSpawnMessages.SpawnCommandDisabled)) {

@@ -29,6 +29,9 @@ public final class MainClass extends JavaPlugin implements Listener {
 		getCommand("joinmessage").setExecutor(this);
 		getCommand("leavemessage").setExecutor(this);
 		getCommand("spawncommands").setExecutor(this);
+		getCommand("hub").setExecutor(this);
+		getCommand("spawn").setExecutor(this);
+		getCommand("lobby").setExecutor(this);
 		getCommand("colorcodes").setExecutor(this);
 		
 		getCommand("custommessages").setTabCompleter(new TabCompleterClass());
@@ -83,7 +86,7 @@ public final class MainClass extends JavaPlugin implements Listener {
 			    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
 			    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnPrefixIncorrectArg));
 			    			} else {
-			    				if (args[1].equalsIgnoreCase("set")) {
+			    				if (args[2].equalsIgnoreCase("set")) {
 			    					if (args.length <= 3) {
 			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
 					    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnPrefixSetIncorrectArg));
@@ -95,14 +98,14 @@ public final class MainClass extends JavaPlugin implements Listener {
 			    			    		API.setPrefix(message);
 			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SetPrefixMessage));
 			    					}
-			    				} else if (args[1].equalsIgnoreCase("enable")) {
+			    				} else if (args[2].equalsIgnoreCase("enable")) {
 			    					if (API.prefixEnabled()) {
 			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.PrefixNotChanged));
 			    					} else {
 			    						API.setPrefixEnabled(true);
 			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.PrefixChanged));
 			    					}
-			    				} else if (args[1].equalsIgnoreCase("disable")) {
+			    				} else if (args[2].equalsIgnoreCase("disable")) {
 			    					if (!API.prefixEnabled()) {
 			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.PrefixNotChanged));
 			    					} else {
@@ -119,14 +122,14 @@ public final class MainClass extends JavaPlugin implements Listener {
 			    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
 			    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnLanguageIncorrectArg));
 			    			} else {
-			    				if (args[1].equalsIgnoreCase("english")) {
+			    				if (args[2].equalsIgnoreCase("english")) {
 			    					if (API.getLanguage().equals(ServerSpawnLanguage.ENGLISH)) {
 					    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.LanguageNotChanged));
 			    					} else {
 			    						API.setLanguage(ServerSpawnLanguage.ENGLISH);
 			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.LanguageChanged));
 			    					}
-			    				} else if (args[1].equalsIgnoreCase("dutch")) {
+			    				} else if (args[2].equalsIgnoreCase("dutch")) {
 			    					if (API.getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
 					    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.LanguageNotChanged));
 			    					} else {
@@ -369,12 +372,6 @@ public final class MainClass extends JavaPlugin implements Listener {
 	    
 	    else if (cmd.getName().equalsIgnoreCase("colorcodes")) {
 	      API.sendChatColorList(p);
-	    }
-	    
-	//===========================================================================================================================//
-	    
-	    else {
-	    	//TODO
 	    }
 		
 	//===========================================================================================================================//
