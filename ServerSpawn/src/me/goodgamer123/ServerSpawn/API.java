@@ -2,6 +2,7 @@ package me.goodgamer123.ServerSpawn;
 
 import java.io.File;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,7 +31,7 @@ public class API {
 		Messages = YamlConfiguration.loadConfiguration(MessagesFile);
 		
 		if (!ServerSpawnYml.exists()) {
-			ServerSpawn.set("Server spawn", null);
+			ServerSpawn.set("Server spawn", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
     		ServerSpawn.set("Teleport on join", true);
     		ServerSpawn.set("Custom messages", true);
     		ServerSpawn.set("Spawn Commands Enabled.Hub", true);
