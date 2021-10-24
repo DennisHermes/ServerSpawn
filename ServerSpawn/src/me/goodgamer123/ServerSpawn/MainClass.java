@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.goodgamer123.ServerSpawn.API.ServerSpawnLanguage;
 import me.goodgamer123.ServerSpawn.API.ServerSpawnMessages;
 import me.goodgamer123.ServerSpawn.API.spawnCommand;
 
@@ -83,11 +84,31 @@ public final class MainClass extends JavaPlugin implements Listener {
 			    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnPrefixIncorrectArg));
 			    			} else {
 			    				if (args[1].equalsIgnoreCase("set")) {
-			    					
-			    				} else if (args[1].equalsIgnoreCase("disable")) {
-			    					
+			    					if (args.length <= 3) {
+			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+					    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnPrefixSetIncorrectArg));
+			    					} else {
+			    						String message = "";
+			    			    		for(int i = 3; i < args.length; i++) {
+			    			    			message = message + args[i] + " ";
+			    			    		}
+			    			    		API.setPrefix(message);
+			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.SetPrefixMessage));
+			    					}
 			    				} else if (args[1].equalsIgnoreCase("enable")) {
-			    					
+			    					if (API.prefixEnabled()) {
+			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.PrefixNotChanged));
+			    					} else {
+			    						API.setPrefixEnabled(true);
+			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.PrefixChanged));
+			    					}
+			    				} else if (args[1].equalsIgnoreCase("disable")) {
+			    					if (!API.prefixEnabled()) {
+			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.PrefixNotChanged));
+			    					} else {
+			    						API.setPrefixEnabled(false);
+			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.PrefixChanged));
+			    					}
 			    				} else {
 			    					p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
 				    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnPrefixIncorrectArg));
@@ -99,9 +120,19 @@ public final class MainClass extends JavaPlugin implements Listener {
 			    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnLanguageIncorrectArg));
 			    			} else {
 			    				if (args[1].equalsIgnoreCase("english")) {
-			    					
+			    					if (API.getLanguage().equals(ServerSpawnLanguage.ENGLISH)) {
+					    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.LanguageNotChanged));
+			    					} else {
+			    						API.setLanguage(ServerSpawnLanguage.ENGLISH);
+			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.LanguageChanged));
+			    					}
 			    				} else if (args[1].equalsIgnoreCase("dutch")) {
-			    					
+			    					if (API.getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+					    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.LanguageNotChanged));
+			    					} else {
+			    						API.setLanguage(ServerSpawnLanguage.DUTCH);
+			    						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.LanguageChanged));
+			    					}
 			    				} else {
 			    					p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
 				    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ServerSpawnLanguageIncorrectArg));

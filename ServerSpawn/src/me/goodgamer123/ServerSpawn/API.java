@@ -42,7 +42,8 @@ public class API {
 		if (!MessagesYml.exists()) {
 			Messages.set("Custom messages.Join message", "&0[&2+&0] &8%playername%");
 			Messages.set("Custom messages.Quit message", "&0[&4-&0] &8%playername%");
-			Messages.set("Prefix", "&0&l[&2Server&aSpawn&0] ");
+			Messages.set("Prefix.Message", "&0&l[&2Server&aSpawn&0] ");
+			Messages.set("Prefix.Enabled", true);
 			Messages.set("Language", ServerSpawnLanguage.ENGLISH.toString());
 			saveFiles();
 		}
@@ -92,7 +93,8 @@ public class API {
 	}
 	
 	public static String getPrefix() {
-		return ChatColor.translateAlternateColorCodes('&', Messages.getString("Prefix"));
+		if (prefixEnabled()) return ChatColor.translateAlternateColorCodes('&', Messages.getString("Prefix.Message"));
+		else return "";
 	}
 	
 	//Messages
@@ -104,12 +106,17 @@ public class API {
 		NeedToBeAPlayer,
 		IncorrectArg,
 		ServerSpawnIncorrectArg,
+		ServerSpawnSettingsIncorrectArg,
+		ServerSpawnPrefixIncorrectArg,
+		ServerSpawnPrefixSetIncorrectArg,
+		ServerSpawnLanguageIncorrectArg,
 		FakeIncorrectArg,
 		CustomMessagesIncorrectArg, 
 		ChangedCustomMessages,
 		NotChangedCustomMessages, 
 		GetJoinMessage,
 		GetQuitMessage,
+		SetPrefixMessage,
 		SpawnCommandDisabled,
 		ChangedHubCommand,
 		NotChangedHubCommand,
@@ -117,6 +124,10 @@ public class API {
 		NotChangedSpawnCommand,
 		ChangedLobbyCommand,
 		NotChangedLobbyCommand,
+		PrefixChanged,
+		PrefixNotChanged,
+		LanguageChanged,
+		LanguageNotChanged,
 		ServerSpawnNotSet,
 		JoinMessageIncorrectArg,
 		SetJoinMessageIncorrectArg,
@@ -198,7 +209,7 @@ public class API {
 			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
 				return ChatColor.GREEN + "Het huidige toetredings bericht is:";
 			} else {
-				return ChatColor.GREEN + "Te current join message is:";
+				return ChatColor.GREEN + "The current join message is:";
 			}
 			
 		} else if (messageType.equals(ServerSpawnMessages.GetQuitMessage)) {
@@ -206,7 +217,15 @@ public class API {
 			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
 				return ChatColor.GREEN + "Het huidige verlatings bericht is:";
 			} else {
-				return ChatColor.GREEN + "Te current leave message is:";
+				return ChatColor.GREEN + "The current leave message is:";
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.SetPrefixMessage)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				return ChatColor.GREEN + "De prefix is ingesteld op: " + getPrefix();
+			} else {
+				return ChatColor.GREEN + "The prefix is set to: " + getPrefix();
 			}
 			
 		} else if (messageType.equals(ServerSpawnMessages.SpawnCommandDisabled)) {
@@ -288,6 +307,54 @@ public class API {
 				return ChatColor.RED + "The /lobby command is allready " + ChatColor.DARK_RED + LobbyCommand + ChatColor.RED + "!";
 			}
 			
+		} else if (messageType.equals(ServerSpawnMessages.PrefixChanged)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String Prefix;
+				if (prefixEnabled()) Prefix = "ingeschakeld"; else Prefix = "uitgeschakeld";
+				return ChatColor.GREEN + "De prefix is nu " + ChatColor.DARK_GREEN + Prefix + ChatColor.GREEN + "!";
+			} else {
+				String Prefix;
+				if (prefixEnabled()) Prefix = "enabled"; else Prefix = "disabled";
+				return ChatColor.GREEN + "The prefix is now " + ChatColor.DARK_GREEN + Prefix + ChatColor.GREEN + "!";
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.PrefixNotChanged)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String Prefix;
+				if (prefixEnabled()) Prefix = "ingeschakeld"; else Prefix = "uitgeschakeld";
+				return ChatColor.RED + "De prefix was al " + ChatColor.DARK_RED + Prefix + ChatColor.RED + "!";
+			} else {
+				String Prefix;
+				if (prefixEnabled()) Prefix = "enabled"; else Prefix = "disabled";
+				return ChatColor.RED + "The prefix is allready " + ChatColor.DARK_RED + Prefix + ChatColor.RED + "!";
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.LanguageChanged)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String Language;
+				if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) Language = "Nederlands"; else Language = "Engels";
+				return ChatColor.GREEN + "De taal is nu ingesteld op " + ChatColor.DARK_GREEN + Language + ChatColor.GREEN + "!";
+			} else {
+				String Language;
+				if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) Language = "Dutch"; else Language = "English";
+				return ChatColor.GREEN + "The language is now set to " + ChatColor.DARK_GREEN + Language + ChatColor.GREEN + "!";
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.LanguageNotChanged)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String Language;
+				if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) Language = "Nederlands"; else Language = "Engels";
+				return ChatColor.RED + "De taal is al ingesteld op " + ChatColor.DARK_RED + Language + ChatColor.RED + "!";
+			} else {
+				String Language;
+				if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) Language = "Dutch"; else Language = "English";
+				return ChatColor.RED + "The language is allready set to " + ChatColor.DARK_RED + Language + ChatColor.RED + "!";
+			}
+			
 		} else if (messageType.equals(ServerSpawnMessages.ServerSpawnNotSet)) {
 			
 			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
@@ -315,6 +382,34 @@ public class API {
 				ChatColor.RED + "Gebruik /serverspawn [set | get | enable | disable | settings].";
 			else return
 				ChatColor.RED + "Use /serverspawn [set | get | enable | disable | settings].";
+			
+		} else if (messageType.equals(ServerSpawnMessages.ServerSpawnSettingsIncorrectArg)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+				ChatColor.RED + "Gebruik /serverspawn settings [prefix | language].";
+			else return
+				ChatColor.RED + "Use /serverspawn settings [prefix | language].";
+			
+		} else if (messageType.equals(ServerSpawnMessages.ServerSpawnPrefixIncorrectArg)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+				ChatColor.RED + "Gebruik /serverspawn settings prefix [set | enable | disable].";
+			else return
+				ChatColor.RED + "Use /serverspawn settings prefix [set | enable | disable].";
+			
+		} else if (messageType.equals(ServerSpawnMessages.ServerSpawnPrefixSetIncorrectArg)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+				ChatColor.RED + "Gebruik /serverspawn settings prefix set [message].";
+			else return
+				ChatColor.RED + "Use /serverspawn settings prefix set [message].";
+			
+		} else if (messageType.equals(ServerSpawnMessages.ServerSpawnLanguageIncorrectArg)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+				ChatColor.RED + "Gebruik /serverspawn settings language [English | Dutch].";
+			else return
+				ChatColor.RED + "Use /serverspawn settings language [English | Dutch].";
 			
 		} else if (messageType.equals(ServerSpawnMessages.FakeIncorrectArg)) {
 			
@@ -430,6 +525,10 @@ public class API {
 		return ServerSpawn.getBoolean("Custom messages");
 	}
 	
+	public static boolean prefixEnabled() {
+		return Messages.getBoolean("Prefix.Enabled");
+	}
+	
 	public static enum spawnCommand {
 		Hub,
 		Spawn,
@@ -469,6 +568,14 @@ public class API {
 	public static void setQuitMessage(String message) {
 		ServerSpawn.set("Custom messages.Join message", message);
 		saveFiles();
+	}
+	
+	public static void setPrefixEnabled(boolean bool) {
+		Messages.set("Prefix.Enabled", bool);
+	}
+	
+	public static void setPrefix(String message) {
+		Messages.set("Prefix.Message", message);
 	}
 	
 	public static void setSpawnCommand(spawnCommand spawnCommandName, boolean bool) {
