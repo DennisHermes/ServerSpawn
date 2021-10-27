@@ -65,7 +65,7 @@ public class API {
 	//Join message
 	
 	public static String getJoinMessage(Player p) {
-		String joinMessage = ChatColor.translateAlternateColorCodes('&', ServerSpawn.getString("Custom messages.Join message"));
+		String joinMessage = ChatColor.translateAlternateColorCodes('&', Messages.getString("Custom messages.Join message"));
 		joinMessage = placeholderReplace(joinMessage, p);
 		return joinMessage;
 	}
@@ -77,7 +77,7 @@ public class API {
 	//Quit message
 	
 	public static String getQuitMessage(Player p) {
-		String quitMessage = ChatColor.translateAlternateColorCodes('&', ServerSpawn.getString("Custom messages.Quit message"));
+		String quitMessage = ChatColor.translateAlternateColorCodes('&', Messages.getString("Custom messages.Quit message"));
 		quitMessage = placeholderReplace(quitMessage, p);
 		return quitMessage;
 	}
