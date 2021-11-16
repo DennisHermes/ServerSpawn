@@ -32,6 +32,7 @@ public class API {
 		
 		if (!ServerSpawnYml.exists()) {
 			ServerSpawn.set("Server spawn", Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+			ServerSpawn.set("Respawn at server spawn", true);
     		ServerSpawn.set("Teleport on join", true);
     		ServerSpawn.set("Custom messages", true);
     		ServerSpawn.set("Spawn Commands Enabled.Hub", true);
@@ -45,6 +46,13 @@ public class API {
 			Messages.set("Prefix.Message", "&0&l[&2&lServer&a&lSpawn&0&l] ");
 			Messages.set("Prefix.Enabled", true);
 			Messages.set("Language", ServerSpawnLanguage.ENGLISH.toString());
+		}
+		
+		try {
+			ServerSpawn.load(ServerSpawnFile);
+			Messages.load(MessagesFile);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		saveFiles();
@@ -129,12 +137,15 @@ public class API {
 		PrefixNotChanged,
 		LanguageChanged,
 		LanguageNotChanged,
+		ChangedRespawn,
+		NotChangedRespawn,
 		ServerSpawnNotSet,
 		JoinMessageIncorrectArg,
 		SetJoinMessageIncorrectArg,
 		QuitMessageIncorrectArg,
 		SetQuitMessageIncorrectArg,
-		SpawnCommandsIncorrectArg
+		SpawnCommandsIncorrectArg,
+		RespawnIncorrectArg
 	}
 	
 	public static String getMessage(ServerSpawnMessages messageType) {
@@ -227,6 +238,30 @@ public class API {
 				return ChatColor.GREEN + "De prefix is ingesteld op: " + ChatColor.RESET + getPrefix();
 			} else {
 				return ChatColor.GREEN + "The prefix is set to: " + ChatColor.RESET + getPrefix();
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.ChangedRespawn)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String Respawn;
+				if (respawnAtServerSpawn()) Respawn = "ingeschakeld"; else Respawn = "uitgeschakeld";
+				return ChatColor.GREEN + "Het respawnen op de server spawn locatie is nu " + ChatColor.DARK_GREEN + Respawn + ChatColor.GREEN + "!";
+			} else {
+				String Respawn;
+				if (respawnAtServerSpawn()) Respawn = "enabled"; else Respawn = "disabled";
+				return ChatColor.GREEN + "Respawn at server spawn location is now " + ChatColor.DARK_GREEN + Respawn + ChatColor.GREEN + "!";
+			}
+			
+		} else if (messageType.equals(ServerSpawnMessages.NotChangedRespawn)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) {
+				String Respawn;
+				if (respawnAtServerSpawn()) Respawn = "ingeschakeld"; else Respawn = "uitgeschakeld";
+				return ChatColor.RED + "Het respawnen op de server spawn locatie is al " + ChatColor.DARK_RED + Respawn + ChatColor.RED + "!";
+			} else {
+				String Respawn;
+				if (respawnAtServerSpawn()) Respawn = "enabled"; else Respawn = "disabled";
+				return ChatColor.RED + "Respawn at server spawn location is allready " + ChatColor.DARK_RED + Respawn + ChatColor.RED + "!";
 			}
 			
 		} else if (messageType.equals(ServerSpawnMessages.SpawnCommandDisabled)) {
@@ -461,6 +496,13 @@ public class API {
 			else return
 					ChatColor.RED + "Use /spawncommands [hub | spawn | lobby] [enable | disable].";
 			
+		} else if (messageType.equals(ServerSpawnMessages.RespawnIncorrectArg)) {
+			
+			if (getLanguage().equals(ServerSpawnLanguage.DUTCH)) return 
+					ChatColor.RED + "Gebruik /respawnatserverspawn [enable | disable].";
+			else return
+					ChatColor.RED + "Use /respawnatserverspawn [enable | disable].";
+			
 		} else return null;
 	}
 	
@@ -522,6 +564,10 @@ public class API {
 		return ServerSpawn.getBoolean("Teleport on join");
 	}
 	
+	public static boolean respawnAtServerSpawn() {
+		return ServerSpawn.getBoolean("Respawn at server spawn");
+	}
+	
 	public static boolean customMessages() {
 		return ServerSpawn.getBoolean("Custom messages");
 	}
@@ -548,6 +594,11 @@ public class API {
 	
 	public static void setServerSpawn(Location location) {
 		ServerSpawn.set("Server spawn", location);
+		saveFiles();
+	}
+	
+	public static void setRespawnAtServerSpawn(boolean bool) {
+		ServerSpawn.set("Respawn at server spawn", bool);
 		saveFiles();
 	}
 	

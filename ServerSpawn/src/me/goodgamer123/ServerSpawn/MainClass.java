@@ -22,6 +22,7 @@ public final class MainClass extends JavaPlugin implements Listener {
 	
 	public void onEnable() {
 		Bukkit.getServer().getPluginManager().registerEvents(new OnJoinLeave(), this);
+		Bukkit.getServer().getPluginManager().registerEvents(new OnRespawn(), this);
 		
 		getCommand("custommessages").setExecutor(this);
 		getCommand("serverspawn").setExecutor(this);
@@ -42,6 +43,10 @@ public final class MainClass extends JavaPlugin implements Listener {
 		getCommand("spawncommands").setTabCompleter(new TabCompleterClass());
 		
 		API.loadFiles(this);
+	}
+	
+	public void onDisable() {
+		API.saveFiles();
 	}
   
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -195,6 +200,34 @@ public final class MainClass extends JavaPlugin implements Listener {
 	    		} else {
 	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
 	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.CustomMessagesIncorrectArg));
+	    		}
+	    	}
+	    }
+	    
+	//===========================================================================================================================//
+		
+		else if (cmd.getName().equalsIgnoreCase("respawnatserverspawn")) {
+	    	if (args.length <= 0) {
+	    		p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.RespawnIncorrectArg));
+	    	} else {
+	    		if (args[0].equalsIgnoreCase("enable")) {
+	    			if (API.respawnAtServerSpawn()) {
+	    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.NotChangedRespawn));
+					} else {
+						API.setRespawnAtServerSpawn(true);
+						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ChangedRespawn));
+					}
+	    		} else if (args[0].equalsIgnoreCase("disable")) {
+	    			if (!API.respawnAtServerSpawn()) {
+	    				p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.NotChangedRespawn));
+					} else {
+						API.setRespawnAtServerSpawn(false);
+						p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.ChangedRespawn));
+					}
+	    		} else {
+	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.IncorrectArg));
+	    			p.sendMessage(API.getPrefix() + API.getMessage(ServerSpawnMessages.RespawnIncorrectArg));
 	    		}
 	    	}
 	    }

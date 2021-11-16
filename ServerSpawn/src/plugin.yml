@@ -3,7 +3,7 @@ api-version: 1.17
 name: ServerSpawn
 author: goodgamer123
 description: config the spawn location and join and leave messages.
-version: 3.0.0
+version: 3.1.0
 
 commands:
   serverspawn:
@@ -33,3 +33,6 @@ commands:
   spawncommands:
     descriptoin: enable and disable spawn commands.
     permission: serverspawn.custommessages
+  respawnatserverspawn:
+    descriptoin: enable and disable respawn at server spawn.
+    permission: serverspawn.respawnatserverspawn
